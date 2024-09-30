@@ -16,8 +16,11 @@ const QuizForm = ({
   isFormCompleted,
 }) => {
   // Calculate and Show Progress
-  const percentage = (currentQuestionIndex / totalQuestions) * 100; // Update percentage based on total questions
-  const strokeDasharray = `${percentage}, 100`;
+  const maxPercentage = 95; // The max progress should be 95%
+  // Calculate the progress percentage based on the current question index
+  const percentage = (currentQuestionIndex / (totalQuestions - 1)) * maxPercentage;
+  // Calculate the strokeDasharray based on the percentage to update the circular progress
+  const strokeDasharray = `${percentage * 2.51}, 251`; // 251 is the full circumference of the circle
 
   return (
     !isFormCompleted && (
@@ -121,17 +124,18 @@ const QuizForm = ({
                 )}
 
                 {/* Next Button */}
-                {showNextButton && currentQuestionIndex < Enrollquestions.length - 1 && (
-                  <div>
-                    <button
-                      type="button"
-                      className="btn btn-primary rounded-pill"
-                      onClick={handleNext}
-                    >
-                      <i className="fas fa-angle-right"></i>
-                    </button>
-                  </div>
-                )}
+                {showNextButton &&
+                  currentQuestionIndex < Enrollquestions.length - 1 && (
+                    <div>
+                      <button
+                        type="button"
+                        className="btn btn-primary rounded-pill"
+                        onClick={handleNext}
+                      >
+                        <i className="fas fa-angle-right"></i>
+                      </button>
+                    </div>
+                  )}
               </div>
             </div>
           </>
