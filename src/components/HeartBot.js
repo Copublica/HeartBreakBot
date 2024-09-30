@@ -60,7 +60,7 @@ const HeartBot3 = () => {
   const [CountDeepgram, setCountDeepgram] = useState(0);
   const [isQuizVisible, setIsQuizVisible] = useState(false);
   const [showVoiceAbbotMilla, setshowVoiceAbbotMilla] = useState(false);
-  const [isFormCompleted, setIsFormCompleted] = useState(true); 
+  const [isFormCompleted, setIsFormCompleted] = useState(true);
   const [UserAttachmentStyleDb, setUserAttachmentStyleDb] = useState(null);
   const navigate = useNavigate();
   const messagesRef = useRef([]);
@@ -108,9 +108,8 @@ const HeartBot3 = () => {
     }
   };
 
-
   //------------------------------------------------------------------------FEtch User Style---------------------------
-  const isFetchCalled = useRef(false); 
+  const isFetchCalled = useRef(false);
 
   const fetchmess = useCallback(async () => {
     try {
@@ -142,20 +141,17 @@ const HeartBot3 = () => {
         );
         setIsQuizVisible(false); // Hide the quiz
       }
-    } catch (error)
+    } catch (error) {
+      ErrorLogger({
+        email: getCookie("email"),
+        errorName: "fetchmess in HeartBot",
+        errorMessage:
+          error.message ||
+          "An error occurred in fetchmess function in HeartBot.",
+      });
 
-    {
-
-        ErrorLogger({
-          email: getCookie("email"),
-          errorName: "fetchmess in HeartBot",
-          errorMessage:
-            error.message || "An error occurred in fetchmess function in HeartBot.",
-        });
-  
-        navigate("/ErrorPage");
-      }
-
+      navigate("/ErrorPage");
+    }
   }, [sendToDeepgram]);
 
   // Call fetchmess at the beginning and only once
@@ -241,17 +237,15 @@ const HeartBot3 = () => {
 
         try {
           mediaRecorder.start(1000);
-        } catch (error)
-
-        {
-
+        } catch (error) {
           ErrorLogger({
             email: getCookie("email"),
             errorName: "useEffect MediaReccorder in HeartBot",
             errorMessage:
-              error.message || "An error occurred in starting the MediaRecorder (useEffect)",
+              error.message ||
+              "An error occurred in starting the MediaRecorder (useEffect)",
           });
-    
+
           navigate("/ErrorPage");
         }
       };
@@ -298,9 +292,8 @@ const HeartBot3 = () => {
   var responseCounts = {};
 
   const handleAnswer = useCallback(
-   async (answer) => {
+    async (answer) => {
       try {
-        
         setCountDeepgram(2);
         console.log("deepgram", CountDeepgram);
 
@@ -321,19 +314,16 @@ const HeartBot3 = () => {
           setIsFormCompleted(true); // Hide the form bot, if needed
           setshowVoiceAbbotMilla(false); // show the voice bot, if needed
         }
-      } catch (error) 
-      {
-
+      } catch (error) {
         ErrorLogger({
           email: getCookie("email"),
           errorName: "HandleAnswer in HeartBot",
           errorMessage:
             error.message || "An error occurred while processing the answer.",
         });
-  
+
         navigate("/ErrorPage");
       }
-      
     },
     [currentQuestionIndex, userAnswers]
   );
@@ -341,39 +331,35 @@ const HeartBot3 = () => {
   const handlePrevious = async () => {
     try {
       if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setShowNextButton(true); // Show Next button when revisiting previous questions
-    }
-    } catch (error)
-    {
-
+        setCurrentQuestionIndex(currentQuestionIndex - 1);
+        setShowNextButton(true); // Show Next button when revisiting previous questions
+      }
+    } catch (error) {
       ErrorLogger({
         email: getCookie("email"),
         errorName: "hanlePrevious in HeartBot",
-        errorMessage:
-          error.message || "An error occurred  in handlePrevious.",
+        errorMessage: error.message || "An error occurred  in handlePrevious.",
       });
 
       navigate("/ErrorPage");
     }
-      
   };
 
   const handleNext = async () => {
     try {
       if (currentQuestionIndex < Enrollquestions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setShowNextButton(currentQuestionIndex + 1 < Enrollquestions.length - 1);
-    }
-    } catch (error) 
-
-    {
-
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setShowNextButton(
+          currentQuestionIndex + 1 < Enrollquestions.length - 1
+        );
+      }
+    } catch (error) {
       ErrorLogger({
         email: getCookie("email"),
         errorName: "handleNext in HeartBot",
         errorMessage:
-          error.message || "An error occurred while moving to the next question",
+          error.message ||
+          "An error occurred while moving to the next question",
       });
 
       navigate("/ErrorPage");
@@ -394,9 +380,9 @@ const HeartBot3 = () => {
         },
         { Yes: 0, No: 0, "Not Sure": 0, "It Depends": 0 }
       );
-  
+
       console.log("Response Counts:", responseCounts); // Check response counts
-  
+
       // Get attachment style name (pattern) and message
       const { pattern: attachmentStyleName, message } =
         await getAttachmentStyleMessage(responseCounts);
@@ -406,30 +392,26 @@ const HeartBot3 = () => {
       setUserAttachmentStyleTitle(attachmentStyleName);
       console.log("Attachment Style Message:", message); // Check which message is returned
       console.log("Attachment Style Name:", attachmentStyleName); // Check attachment style name
-  
+
       // Set the attachment style message and mark the form as completed
       setAttachmentStyle(message);
-  
+
       const spinner = document.querySelector(".spiner");
       if (spinner) {
         spinner.style.display = "none";
       } else {
         console.error("Spinner element not found");
       }
-  
+
       // Retrieve username from cookie
       const username = getCookie("name") || "there";
-  
+
       // Compose the message to send to Deepgram
       const deepgramMessage = `Hello ${username}, thanks for participating, it helps me understand you better. Based on your responses, it looks like you have traits of ${attachmentStyleName}. Do you want a detailed analysis about your attachment style or do you want to talk about something else?`;
-  
+
       // Send message to Deepgram after form completion
       await sendToDeepgram(deepgramMessage);
-  
-    } catch (error)
-    
-    {
-
+    } catch (error) {
       ErrorLogger({
         email: getCookie("email"),
         errorName: "calculateAttachmentStyle in HeartBot",
@@ -446,7 +428,7 @@ const HeartBot3 = () => {
     return result;
   };
 
-   async function sendToDeepgram(text) {
+  async function sendToDeepgram(text) {
     checkpause = true;
     const deepgramApiKey = process.env.REACT_APP_DEEPGRAM_API_KEY;
     try {
@@ -472,19 +454,16 @@ const HeartBot3 = () => {
       audioQueue.push(audioUrl);
       textQueue.push(text);
       playNextAudio();
-    } catch (error)
-     {
-
+    } catch (error) {
       ErrorLogger({
         email: getCookie("email"),
         errorName: "sendToDeepgram in HeartBot",
-        errorMessage:
-          error.message || "An error occurred in sendToDeepgram.",
+        errorMessage: error.message || "An error occurred in sendToDeepgram.",
       });
 
       navigate("/ErrorPage");
     }
-    }
+  }
 
   const username = getCookie("name") || "User";
 
@@ -509,8 +488,6 @@ const HeartBot3 = () => {
     messagesRef.current = messages;
   }, [messages]);
 
-
-  
   async function handleSubmit(initialMessage = "") {
     try {
       setIsPaused(true); // Pause transcription
@@ -599,48 +576,40 @@ const HeartBot3 = () => {
       } else {
         console.log("Please say something");
       }
-    } catch (error)
-    
-    {
-    ErrorLogger({
-      email: getCookie("email"),
-      errorName: "handleSubmit in HeartBot",
-      errorMessage:
-        error.message || "An error occurred in handleSubmit.",
-    });
+    } catch (error) {
+      ErrorLogger({
+        email: getCookie("email"),
+        errorName: "handleSubmit in HeartBot",
+        errorMessage: error.message || "An error occurred in handleSubmit.",
+      });
 
-    navigate("/ErrorPage");
-  }
+      navigate("/ErrorPage");
+    }
   }
 
   function detectBrowser() {
     try {
       const userAgent = navigator.userAgent.toLowerCase();
-  
+
       if (userAgent.includes("safari") && !userAgent.includes("chrome")) {
         return "safari";
       } else if (userAgent.includes("chrome")) {
         return "chrome";
       }
       return "other";
-    } catch (error)
-
-    {
+    } catch (error) {
       ErrorLogger({
         email: getCookie("email"),
         errorName: "detectBrowser in HeartBot",
-        errorMessage:
-          error.message || "An error occurred to  detectBrowser.",
+        errorMessage: error.message || "An error occurred to  detectBrowser.",
       });
-  
+
       navigate("/ErrorPage");
     }
   }
 
-
   function playNextAudio() {
     try {
-
       if (isPlaying || audioQueue.length === 0) {
         return;
       }
@@ -686,16 +655,13 @@ const HeartBot3 = () => {
         setZoom(false);
         slowDownAndStopAnimation(animation12Ref);
       };
-    } catch (error)
-    
-    {
+    } catch (error) {
       ErrorLogger({
         email: getCookie("email"),
         errorName: "playNextAudio in HeartBot",
-        errorMessage:
-          error.message || "An error occurred to  playNextAudio.",
+        errorMessage: error.message || "An error occurred to  playNextAudio.",
       });
-  
+
       navigate("/ErrorPage");
     }
   }
@@ -710,25 +676,22 @@ const HeartBot3 = () => {
         mediaRecorderRef.current.stop();
         mediaRecorderRef.current = null;
       }
-  
+
       // Stop all tracks in the stream
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
         streamRef.current = null;
         setStream(null);
       }
-  
+
       return "Microphone and stream stopped successfully";
-    } catch (error)
-    
-    {
+    } catch (error) {
       ErrorLogger({
         email: getCookie("email"),
         errorName: "stopMic in HeartBot",
-        errorMessage:
-          error.message || "An error occurred to  stopMic.",
+        errorMessage: error.message || "An error occurred to  stopMic.",
       });
-  
+
       navigate("/ErrorPage");
     }
   };
@@ -749,19 +712,17 @@ const HeartBot3 = () => {
       event.preventDefault(); // Prevent any default behavior that could cause a reload
       event.stopPropagation(); // Stop the event from propagating to parent elements if necessary
       setBtnText("Milla is analyzing");
-  
+
       // Assuming `newWord` is state and used in `handleSubmit`
       handleSubmit(questionText); // Pass the question text directly to handleSubmit
-    } catch (error) 
-
-    {
+    } catch (error) {
       ErrorLogger({
         email: getCookie("email"),
         errorName: "handleQuestionClick in HeartBot",
         errorMessage:
           error.message || "An error occurred in  handleQuestionClick.",
       });
-  
+
       navigate("/ErrorPage");
     }
   }, []);
@@ -871,6 +832,14 @@ const HeartBot3 = () => {
     }
   }, [btnText]);
 
+
+
+  //logout 
+  const handleLogout = () => {
+    stopMic(); 
+    navigate("/loginPage"); 
+  };
+
   return (
     <div className="display">
       <div
@@ -883,11 +852,12 @@ const HeartBot3 = () => {
         <div className="d-flex">
           <div className="milaNav" style={{ zIndex: "99" }}>
             <div className="navbar-4">
-              <Link to="/MainPage" onClick={stopMic}>
-                <button className="back-button" type="button">
-                  <i className="fas fa-angle-left"></i>
-                </button>
-              </Link>
+              <button
+                className="logout-button btn btn-dark ms-auto"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>
