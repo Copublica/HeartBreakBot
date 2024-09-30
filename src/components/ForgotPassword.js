@@ -90,7 +90,7 @@ function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "https://backend.supermilla.com/resetPassword/request-reset",
+        "https://backend.supermilla.com/hbresetPassword/request-reset",
         { email }
       );
       setLoading(false);
@@ -113,7 +113,7 @@ function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "https://backend.supermilla.com/resetPassword/request-reset",
+        "https://backend.supermilla.com/hbresetPassword/request-reset",
         { email }
       );
       setLoading(false);
@@ -135,7 +135,7 @@ function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "https://backend.supermilla.com/resetPassword/verify-otp",
+        "https://backend.supermilla.com/hbresetPassword/verify-otp",
         { email, otp: enteredOtp }
       );
       // setNotification('OTP verified successfully. Please enter your new password.');
@@ -168,7 +168,7 @@ function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "https://backend.supermilla.com/resetPassword/reset-password",
+        "https://backend.supermilla.com/hbresetPassword/reset-password",
         { email, newPassword }
       );
       // setNotification('Password reset successfully. Redirecting to login page...');

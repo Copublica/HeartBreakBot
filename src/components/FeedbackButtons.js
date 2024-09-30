@@ -67,7 +67,7 @@ const FeedbackButtons = ({ currentQuestion, curans }) => {
     };
 
     try {
-      const response = await fetch("https://backend.supermilla.com/dislike", {
+      const response = await fetch("htts://backend.supermilla.com/dislike", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

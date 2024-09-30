@@ -123,7 +123,7 @@ function SignUp() {
     setLoading(true);
 
     try {
-      const response = await axios.post("https://backend.supermilla.com/register", { username, email, password });
+      const response = await axios.post("https://backend.supermilla.com/hbregister", { username, email, password });
       setUserId(response.data.userId);
       setShowOtpInput(true); // Show OTP input field
       setShowOtpPopup(true); // Show OTP popup
@@ -154,7 +154,7 @@ function SignUp() {
     const enteredOtp = otp.join(""); 
 
     try {
-      const response = await axios.post("https://backend.supermilla.com/register/verify-otp", { userId, otp: enteredOtp });
+      const response = await axios.post("https://backend.supermilla.com/hbregister/verify-otp", { userId, otp: enteredOtp });
       toast.success("Registration successful! Please login.");
       setTimeout(() => {
         navigate("/LoginPage");
@@ -169,7 +169,7 @@ function SignUp() {
     setLoading(true);
 
     try {
-      const response = await axios.post("https://backend.supermilla.com/register/resend-otp", { userId });
+      const response = await axios.post("https://backend.supermilla.com/hbregister/resend-otp", { userId });
       setTimer(60); // Reset timer
       setIsResendDisabled(true); // Disable resend button
       setLoading(false);
