@@ -139,58 +139,10 @@ function LoginPage() {
       toast.error("Google Login Failed");
     }
   };
-
-//added
-  function detectBrowser() {
-    const userAgent = navigator.userAgent.toLowerCase();
-
-    if (userAgent.includes('crios')) {
-      return 'chrome'; // Chrome on iOS
-    } else if (userAgent.includes('safari') && !userAgent.includes('crios') && !userAgent.includes('chrome')) {
-      return 'safari'; // Safari on iOS or Mac
-    }
-    return 'other';
-  }
-
-  useEffect(() => {
-    const browser = detectBrowser();
-    if (browser === 'safari') {
-      setShowPopup(true);
-    }
-  }, []);
-
-  const handlePopupClose = () => {
-    setShowPopup(false);
-    navigate('/WelcomeLogin')
-  };
   
-
   return (
     <div className="container px-4" id="loginpage">
-       {showPopup && (
-        <Popup open={showPopup} closeOnDocumentClick onClose={handlePopupClose}
-          overlayStyle={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        contentStyle={{
-          width: "80%",
-          maxWidth: "400px",
-          height: "auto",
-          padding: "20px",
-          border:'none',
-          borderRadius: "10px",
-          textAlign: "center",
-          position: "relative", // Added relative positioning to the popup content
-        }}>
-          <div className="popup-content-main">
-            <h3>Recommended Browser</h3>
-            <p>For the best experience, we recommend using Google Chrome.</p>
-            <button onClick={handlePopupClose} className="popup-close">Close</button>
-          </div>
-        </Popup>
-      )}
+      
       <ToastContainer
           position="top-center"
           autoClose={1000}
