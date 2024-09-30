@@ -1,0 +1,362 @@
+/*.form-check-label-register {
+  font-size: 9px;
+  margin-top: 3px;
+}
+
+
+#terms {
+  margin-left: -18px;
+  margin-top: 6px;
+}
+
+.text-red {
+  color: red;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-inner {
+  background: #fff;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+.popup-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1; 
+}
+
+.popup-actions {
+  padding: 10px;
+  background: #d0d0d0;
+  text-align: center;
+}
+
+
+
+.accpet-button {
+  background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);
+  color: white;
+  width: 100%; 
+  border: none;
+  max-width: 200px;
+}
+.accpet-button:hover {
+  color: white;
+}
+
+.popup-inner h2 {
+  margin: 5px;
+  font-size: 16px;
+}
+
+.popup-content p
+  {
+    font-size: 10px;
+}
+
+.popup-content h3{
+  
+    font-size: 17px;
+}
+
+.popup-content h4{
+  
+    font-size: 17px;
+
+}
+
+.popup-content ul{
+  font-size: 10px;
+}
+
+.popup-inner-top {
+  background: #d0d0d0;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.popup-inner-top span {
+  display: inline-block;
+  margin: 0 5px; 
+  font-size: 18px; 
+  color: black; 
+}
+
+
+.btn {
+  font-size: 1rem; 
+  padding: 0.75rem 1.5rem; 
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem; 
+}
+
+
+.popup-actions .btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.popup-actions .btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.popup-actions .btn.accept-button {
+  background-color: #a73728;
+  border-radius: 25px;
+}
+
+.popup-actions .btn.accept-button:hover {
+  background-color: #882b21;
+}*/
+
+
+
+
+.content-wrapper-register {
+  margin-top: 0rem;
+}
+
+.register-main-image {
+  max-width: 50%; /* Adjust this percentage as needed */
+  height: auto;
+}
+
+.text-red {
+  color: red;
+}
+
+.main-text {
+  font-size: 2rem;
+  color: #6c757d;
+  font-weight: bold;
+}
+
+.text-container {
+  margin-bottom: 1rem;
+  margin-top: -1rem; /* Reduced top gap */
+}
+
+.field {
+  margin-top: 0;
+  width: 100%;
+  max-width: 319px;
+  position: relative; /* Ensures the icon is positioned relative to this container */
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem; /* Adjusted for Bootstrap's default spacing */
+}
+
+.form-container {
+  width: 100%;
+  max-width: 319px; /* Fixed width */
+}
+
+.form-control {
+  font-size: 1rem; 
+  padding: 1rem; 
+  background-color: #d6d6d6; /* Text color set to grey */
+  padding-right: 40px; /* Adjust to make space for the icon */
+}
+
+.icon-right {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* Ensures the icon does not interfere with input */
+}
+
+.btn {
+  font-size: 1rem; 
+  padding: 0.75rem 1.5rem; 
+}
+
+.button-submit-register {
+  background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);
+  color: white;
+  width: 100%; /* Same width as input fields */
+  border: none;
+  border-radius: 20px;
+  max-width: 319px;
+}
+
+.button-submit-register:hover {
+  color: white;
+}
+
+.form-check-label-register {
+  font-size: 9px;
+  margin-top: 3px;
+}
+
+/* Check Nox terms text */
+#terms {
+  margin-left: -18px;
+  margin-top: 6px;
+}
+
+.text-register {
+  font-size: 11px;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-inner {
+  background: #fff;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh; /* Limits the height of the popup */
+}
+
+.popup-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1; /* Allows the content to grow and take available space */
+}
+
+.popup-actions {
+  padding: 10px;
+  background: #f1f1f1;
+  text-align: center;
+}
+
+
+.accpet-button {
+  background: linear-gradient(136deg, rgba(240, 20, 20, 0.39) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);
+  color: white;
+  width: 100%; /* Same width as input fields */
+  border: none;
+  max-width: 200px;
+}
+.accpet-button:hover {
+  color: white;
+}
+
+.popup-inner h2 {
+  margin: 5px;
+  font-size: 16px;
+}
+
+.popup-content p
+  {
+    font-size: 10px;
+}
+
+.popup-content h3{
+  
+    font-size: 17px;
+}
+
+.popup-content h4{
+  
+    font-size: 17px;
+
+}
+
+.popup-content ul{
+  font-size: 10px;
+}
+/* Added CSS for grey background in popup top section */
+.popup-inner-top {
+  background: #f1f1f1;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.popup-inner-top span {
+  display: inline-block;
+  margin: 0 5px; 
+  font-size: 18px; 
+  color: black; 
+}
+
+.toast-container {
+  width: 100%;
+  max-width: 350px;
+}
+.verify-button{
+  background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);
+  color: white;
+  width: 100%; /* Same width as input fields */
+  border: none;
+  max-width: 200px;
+}
+.verify-button:hover{
+  color: white;
+}
+.otp-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.otp-popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.otp-form input {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  text-align: center;
+  margin: 0 5px;
+  border: none;
+  background: #e7e7e7;
+  border-radius: 8px;
+}
+
+.resend-otp .btn-link {
+  cursor: pointer;
+}
