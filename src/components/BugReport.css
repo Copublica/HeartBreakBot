@@ -1,0 +1,58 @@
+.issue_btn {
+    width: 100%;
+    border: none;
+    background: white;
+    color: rgb(0, 0, 0) !important;
+    height: 35px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #15057B;
+}
+.issue_btn.active {
+    background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);;
+    color: aliceblue !important;
+  }
+
+ .severity-level-btn{
+    background: white;
+    color: rgb(0, 0, 0) !important;
+    /* border: 1px solid rgb(122, 122, 122); */
+    border: 1px solid #15057B;
+    width: 100px;
+ } 
+ .severity-level-btn.selected{
+    background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);;
+    color: aliceblue !important;
+  }
+
+
+  .frequency-option-btn{
+    background: white;
+    color: rgb(0, 0, 0) !important;
+    border: 1px solid #15057B;
+    width: 100px;
+  }
+
+  .frequency-option-btn.selected{
+    background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);;
+    color: aliceblue !important;
+  }
+
+
+
+  /* Custom styling for the Submit button */
+  .btn-submit {
+    background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);
+    color: aliceblue !important;
+    height: 35px;
+    width: 200px;
+  }
+  
+  .btn-submit:hover {
+    background: rgb(194, 193, 193);
+    color: #000000;
+    border: none;
+   
+  }
