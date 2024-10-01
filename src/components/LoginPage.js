@@ -107,7 +107,7 @@ function LoginPage() {
         setCookie('email', response.data.user.email, 7);
         setLoading(false);
         fetchmess();
-        navigate("/HeartBot"); 
+        navigate("/MainPage"); 
       } else {
         setLoading(false);
         toast.error(response.data.message);
@@ -133,7 +133,7 @@ function LoginPage() {
       setCookie('name', user.username, 7); 
       setCookie('email', user.email, 7);
       fetchmess();
-      navigate('/HeartBot'); 
+      navigate('/MainPage'); 
     } catch (error) {
       console.error('Error during Google login:', error);
       toast.error("Google Login Failed");
@@ -265,7 +265,7 @@ export const CustomButton = () => {
             setCookie('email', user.email, 7);
             setLoading(false);
             fetchmess();
-            navigate('/HeartBot'); // Redirect to the main page
+            navigate('/MainPage'); // Redirect to the main page
           } catch (error) {
             console.error('Error during Google login:', error);
             setLoading(false);
