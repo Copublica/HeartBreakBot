@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import loadingSpiner from "./spinner.json";
 import Lottie from "lottie-react";
 import { Link, useNavigate } from "react-router-dom";
-
+import OtherComponent from './welcomeLogin';
 import Animation123 from "./greycolor.json";
 import Animation12 from "./BarAanimation.json";
 import readingAnimation from "./quizAnimation.json";
+
 
 import FeedbackButtons from "./FeedbackButtons";
 import { determineAttachmentStyle } from "./AttachmentStyleService";
@@ -73,6 +74,7 @@ const HeartBot3 = () => {
   let counttranscript = 3000;
   let checkpause = false;
   let CountQuestion = "";
+  let mediaRecorder, socket, audioContext, micSource;
 
   useEffect(() => {
     if (isPaused) {
@@ -132,12 +134,12 @@ const HeartBot3 = () => {
       const userAttachmentStyleCookie = getCookie("UserAttechementstyle");
       if (userAttachmentStyleCookie === "false") {
         await sendToDeepgram(
-          "I'm Milla, an AI agent created by Copublica to offer emotional and mental health support to individuals coping with the difficulties of heartbreak. While I strive to assist you, I'm not perfect. If my responses don't feel right, feel free to ask for clarification. To better understand your attachment style, I’d like to ask you a few quick questions. Don't worry, it won't take long..."
+          "I'm Mila, an AI agent created to offer emotional and mental health support to individuals coping with the difficulties of heartbreak. While I strive to assist you, I'm not perfect. If my responses don't feel right, feel free to ask for clarification. To better understand your attachment style, I’d like to ask you a few quick questions. Don't worry, it won't take long..."
         );
         setIsQuizVisible(true); // Show the quiz after Deepgram completes
       } else {
         await sendToDeepgram(
-          "I'm Milla, an AI agent created by Copublica to offer emotional and mental health support to individuals coping with the difficulties of heartbreak. While I strive to assist you, I'm not perfect. If my responses seem off, don't hesitate to ask again."
+         "I'm Mila, an AI agent built to offer emotional and mental health support to individuals coping with the difficulties of heartbreak. While I strive to assist you, I'm not perfect. If my responses seem off, don't hesitate to ask again"
         );
         setIsQuizVisible(false); // Hide the quiz
       }
@@ -162,132 +164,176 @@ const HeartBot3 = () => {
 
   //-------------=============================---------------------------==================================================
 
-  useEffect(() => {
-    let count = 4;
-    let timer;
-    const startTimer = () => {
-      clearInterval(timer);
-      count = 4;
-      timer = setInterval(() => {
-        count--;
-        console.log(count);
-        if (count === 0) {
-          clearInterval(timer);
-          console.log("Time's up!");
-          if (finalTranscript !== "") {
-            finalTranscript += "\n";
-            newWord = finalTranscript;
-            // if (countConversitions < 12) {
-            //     countConversitions++;
-            //     handleAnswer();
-            // }
-            // else if (countConversitions == 12) {
-            //     countConversitions++;
-            //     getAttachmentStyleMessage();
-            // }
+    // Function to check the correct audio MIME type supported by the browser
+    function getSupportedMimeType() {
+      const mimeTypes = [
+        'audio/webm;codecs=opus', 
+        'audio/ogg;codecs=opus', 
+        'audio/mp4',
+        'audio/x-matroska;codecs=opus'
+      ];
 
-            // else {
-            handleSubmit();
-            // }
-
-            setBtnText("Milla is thinking");
-            finalTranscript = "";
-          }
+      for (const mimeType of mimeTypes) {
+        if (MediaRecorder.isTypeSupported(mimeType)) {
+          return mimeType;
         }
-      }, 1000);
-    };
-
-    slowDownAndStopAnimation(animation12Ref);
-
-    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-      console.log({ stream });
-
-      // Check for supported MIME types
-      let mimeType = "";
-      if (MediaRecorder.isTypeSupported("audio/webm")) {
-        mimeType = "audio/webm";
-      } else if (MediaRecorder.isTypeSupported("audio/mp4")) {
-        mimeType = "audio/mp4";
-      } else if (MediaRecorder.isTypeSupported("audio/mpeg")) {
-        mimeType = "audio/mpeg";
-      } else {
-        return alert("Browser not supported");
       }
+      return null; // If no supported MIME type is found
+    }
 
-      const mediaRecorder = new MediaRecorder(stream, { mimeType });
-      const socket = new WebSocket("wss://api.deepgram.com/v1/listen", [
-        "token",
-        "e7247247734201d7b7eab7dca67f7db6e562e51e", // Replace with your actual key
-      ]);
+    // Initialize AudioContext for iOS to play audio without stopping the mic
+    function initializeAudioContext() {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      return audioContext;
+    }
 
-      socket.onopen = () => {
-        console.log({ event: "onopen" });
-        const spinner = document.querySelector(".spiner");
-        if (spinner) {
-          spinner.style.display = "none";
-        } else {
-          console.error("Spinner element not found");
-        }
 
-        mediaRecorder.ondataavailable = async (event) => {
-          if (event.data.size > 0 && socket.readyState == 1) {
-            socket.send(event.data);
-          }
-        };
 
-        try {
-          mediaRecorder.start(1000);
-        } catch (error) {
-          ErrorLogger({
-            email: getCookie("email"),
-            errorName: "useEffect MediaReccorder in HeartBot",
-            errorMessage:
-              error.message ||
-              "An error occurred in starting the MediaRecorder (useEffect)",
-          });
-
-          navigate("/ErrorPage");
-        }
-      };
-
-      socket.onmessage = (message) => {
-        console.log(checkpause);
-        // Skip processing if transcription is paused
-        if (!checkpause) {
-          clearTimeout(timeoutHandle);
-          const received = JSON.parse(message.data);
-
-          if (
-            received.channel &&
-            received.channel.alternatives &&
-            received.channel.alternatives.length > 0
-          ) {
-            const transcript = received.channel.alternatives[0].transcript;
-            if (transcript) {
-              finalTranscript += transcript + " ";
-              setTranscript(finalTranscript);
-              startTimer();
-              setIsQuizVisible(true);
-              setIsMillaAnswering(false);
-              setDisplayedText(finalTranscript);
-              setIsTranscriptVisible(true);
-              setBtnText("Please speak");
+    useEffect(() => {
+      let count = 4;
+      let timer;
+    
+      // Timer to trigger handleSubmit when transcription is finished
+      const startTimer = () => {
+        clearInterval(timer);
+        count = 4;
+        timer = setInterval(() => {
+          count--;
+          console.log(count);
+          if (count === 0) {
+            clearInterval(timer);
+            console.log("Time's up!");
+    
+            if (finalTranscript !== "") {
+              finalTranscript += "\n";
+              newWord = finalTranscript;
+    
+              // You can uncomment the following if/else if logic if needed
+              // if (countConversitions < 12) {
+              //     countConversitions++;
+              //     handleAnswer();
+              // } else if (countConversitions == 12) {
+              //     countConversitions++;
+              //     getAttachmentStyleMessage();
+              // } else {
+              handleSubmit();
+              // }
+    
+              setBtnText("Milla is thinking");
+              finalTranscript = "";
             }
           }
+        }, 1000);
+      };
+    
+      const initialize = async () => {
+        try {
+          slowDownAndStopAnimation(animation12Ref);
+    
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          audioContext = initializeAudioContext(); // Initialize the audio context
+          micSource = audioContext.createMediaStreamSource(stream);
+          console.log("Microphone stream:", stream);
+    
+          // Get supported MIME type
+          const mimeType = getSupportedMimeType();
+          if (!mimeType) {
+            return alert("Your browser does not support any of the required audio formats for recording.");
+          }
+    
+          // Initialize MediaRecorder
+          const mediaRecorder = new MediaRecorder(stream, { mimeType });
+          console.log("Using MIME type:", mimeType);
+    
+          // Initialize WebSocket connection with Deepgram
+          const socket = new WebSocket('wss://api.deepgram.com/v1/listen', [
+            'token',
+            'e7247247734201d7b7eab7dca67f7db6e562e51e', // Replace with your Deepgram API key
+          ]);
+    
+          socket.onopen = () => {
+            console.log({ event: "onopen" });
+    
+            const spinner = document.querySelector(".spiner");
+      
+            spinner.style.display = "none";
+    
+            mediaRecorder.ondataavailable = async (event) => {
+              if (event.data.size > 0 && socket.readyState === 1) {
+                socket.send(event.data);
+              }
+            };
+    
+            try {
+              mediaRecorder.start(1000); // Capture audio data in 1-second intervals
+            } catch (error) {
+              ErrorLogger({
+                email: getCookie("email"),
+                errorName: "useEffect MediaRecorder in HeartBot",
+                errorMessage: error.message || "An error occurred in starting the MediaRecorder (useEffect)",
+              });
+              navigate("/ErrorPage");
+            }
+          };
+    
+          socket.onmessage = (message) => {
+            console.log(checkpause);
+            // Skip processing if transcription is paused
+            if (!checkpause) {
+              clearTimeout(timeoutHandle);
+              const received = JSON.parse(message.data);
+    
+              if (
+                received.channel &&
+                received.channel.alternatives &&
+                received.channel.alternatives.length > 0
+              ) {
+                const transcript = received.channel.alternatives[0].transcript;
+                if (transcript) {
+                  finalTranscript += transcript + " ";
+                  setTranscript(finalTranscript);
+                  startTimer();
+                  setIsQuizVisible(true);
+                  setIsMillaAnswering(false);
+                  setDisplayedText(finalTranscript);
+                  setIsTranscriptVisible(true);
+                  setBtnText("Please speak");
+                }
+              }
+            }
+          };
+    
+          socket.onerror = (error) => {
+            console.log({ event: "onerror", error });
+          };
+    
+          // Cleanup function to stop microphone and clear intervals
+          return () => {
+            stopMic();
+            clearInterval(timer);
+            mediaRecorder.stop();
+            socket.close();
+          };
+        } catch (error) {
+          console.error("Error during initialization:", error);
         }
       };
-
-      socket.onerror = (error) => {
-        console.log({ event: "onerror", error });
+    
+      // Call the initialize function (async inside useEffect)
+      initialize();
+    
+      // Cleanup on component unmount
+      return () => {
+        clearInterval(timer);
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+        }
+        if (socket && socket.readyState === 1) {
+          socket.close();
+        }
       };
-    });
-
-    return () => {
-      stopMic();
-      clearInterval(timer);
-    };
-  }, []);
-
+    }, []);
+    
   var nextQuestionIndex = -1;
   var responseCounts = {};
 
@@ -397,11 +443,10 @@ const HeartBot3 = () => {
       setAttachmentStyle(message);
 
       const spinner = document.querySelector(".spiner");
-      if (spinner) {
+      
         spinner.style.display = "none";
-      } else {
-        console.error("Spinner element not found");
-      }
+     
+    
 
       // Retrieve username from cookie
       const username = getCookie("name") || "there";
@@ -526,7 +571,7 @@ const HeartBot3 = () => {
               Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
             },
             body: JSON.stringify({
-              model: "gpt-4",
+              model: "gpt-4o-mini-2024-07-18",
               messages: newMessages,
             }),
           }
@@ -904,12 +949,9 @@ const HeartBot3 = () => {
               </div>
 
               {/* Audio Player */}
-              <audio
-                id="audioPlayer"
-                controls
-                className="audioplayer"
-                ref={audioPlayerRef}
-              ></audio>
+             
+             <audio id="audioPlayer" controls ref={audioPlayerRef}></audio>
+             
             </div>
           </div>
         )}

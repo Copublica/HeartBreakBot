@@ -120,55 +120,10 @@ function MainPage() {
   //   return 'other';
   // }
 
-  function detectBrowser() {
-    const userAgent = navigator.userAgent.toLowerCase();
-
-    if (userAgent.includes('crios')) {
-      return 'chrome'; // Chrome on iOS
-    } else if (userAgent.includes('safari') && !userAgent.includes('crios') && !userAgent.includes('chrome')) {
-      return 'safari'; // Safari on iOS or Mac
-    }
-    return 'other';
-  }
-
-  useEffect(() => {
-    const browser = detectBrowser();
-    if (browser === 'safari') {
-      setShowPopup(true);
-    }
-  }, []);
-
-  const handlePopupClose = () => {
-    setShowPopup(false);
-    navigate('/loginPage')
-  };
+ 
 
   return (
     <div className="hero-container" id="MainPage">
-       {showPopup && (
-        <Popup open={showPopup} closeOnDocumentClick onClose={handlePopupClose}
-          overlayStyle={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        contentStyle={{
-          width: "80%",
-          maxWidth: "400px",
-          height: "auto",
-          padding: "20px",
-          border:'none',
-          borderRadius: "10px",
-          textAlign: "center",
-          position: "relative", // Added relative positioning to the popup content
-        }}>
-          <div className="popup-content-main">
-            <h3>Recommended Browser</h3>
-            <p>For the best experience, we recommend using Google Chrome.</p>
-            <button onClick={handlePopupClose} className="popup-close">Close</button>
-          </div>
-        </Popup>
-      )}
       <div className="heroGreeting">
         <nav className="NavBar navbar navbar-expand-lg">
           <div className="container-fluid">
@@ -185,7 +140,7 @@ function MainPage() {
 
         <div className="container">
           <div className="row">
-            <div className="col-6 col-left">
+            {/* <div className="col-6 col-left">
               <div
                 className="card card-left d-flex mt-2 myCard"
                 onClick={() => recordVoiceBotUsage("Social Emotional Learning", "/HeartBot")}
@@ -198,8 +153,8 @@ function MainPage() {
               >
                 AIDS awareness
               </div>
-            </div>
-            <div className="col-6 col-right">
+            </div> */}
+            {/* <div className="col-6 col-right">
               <div
                 className="card card-right mt-2 myCard"
                 onClick={() => recordVoiceBotUsage("Mental Health", "/HeartBot")}
@@ -212,21 +167,29 @@ function MainPage() {
               >
                 Learn about voicebots
               </div>
-            </div>
-            <div className="col-12">
+            </div> */}
+            {/* <div className="col-12">
               <div
                 className="card card-right mt-2 myCard"
                 onClick={() => recordVoiceBotUsage("Menopause & Midlife Crisis", "/Mmc")}
               >
                 Menopause & midlife crisis
               </div>
-            </div>
+            </div> */}
             <div className="col-12">
+           
               <div
-                className="card card-right mt-2 myCard"
-                onClick={() => recordVoiceBotUsage("Menopause & Midlife Crisis", "/HeartBot")}
-              >
-                Heart break
+                className=" mt-2 myCard newcardcss" 
+               >
+                <div>
+                
+                <img src="./assets/images/Heartbot.png" className="bot-image" style={{ width: '150px' }} alt="HeartBot" />
+
+              </div>
+                <p className="bot-text">Looks like you beat the crowd! <br></br> Being an early bird you can now enjoy our AI heartbot for free.</p>
+
+                <button className="btn btn-light hearbot-btn"  onClick={() => recordVoiceBotUsage("Menopause & Midlife Crisis", "/HeartBot")}>Try for free</button>
+
               </div>
             </div>
           </div>
@@ -234,25 +197,26 @@ function MainPage() {
 
         <h4 className="mt-3 faq">Frequently asked questions</h4>
         <div className="convo-history">
-          <Link to="/test" className="link">
+          <div className="link">
             <div className="accordion1">
-              <p>What is Social Emotional Learning?</p>
+              <p>How do I cope with the pain and loneliness after a recent breakup?
+ </p>
             </div>
-          </Link>
-          <Link to="/displayNostress" className="link">
+          </div>
+          <div className="link">
             <div className="accordion1">
-              <p>I am feeling anxious. What should I do?</p>
+              <p>How do I stop overthinking and worrying about everything constantly?</p>
             </div>
-          </Link>
-          <Link to="/displayAids" className="link">
+          </div>
+          <div className="link">
             <div className="accordion1">
-              <p>What is HIV type 2?</p>
+              <p>How can I improve my relationships and communicate more effectively?</p>
             </div>
-          </Link>
+          </div>
         </div>
       </div>
     </div>
-  );
+  );  
 }
 
 export default MainPage;

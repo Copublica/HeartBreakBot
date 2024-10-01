@@ -88,7 +88,7 @@ const WelcomeLogin = () => {
       setCookie("name", user.username, 7);
       setCookie("email", user.email, 7);
       fetchmess();
-      navigate("/HeartBot");
+      navigate("/MainPage");
     } catch (error) {
       console.error("Error during Google login:", error);
       toast.error("Google Login Failed");
@@ -111,10 +111,13 @@ const WelcomeLogin = () => {
       <div className="auth-contents">
         <div className="logo-section">
           <div className="logo">
-            <img className="" src="/assets/images/cop1.png" alt="logo" />
+            <img className="" src="/assets/images/logo.png" alt="logo" />
           </div>
+        
           <div className="logo-heading">
+            
             <h3 className="mt-3 fs-5"></h3>
+            <p>You made it in time! As an early bird, Heartbot is yours to use for free.</p>
             {/* <p className='w-p-text'>Hello! Ready to begin?</p> */}
           </div>
         </div>
@@ -191,7 +194,7 @@ export const CustomButton = () => {
             setCookie("email", user.email, 7);
             setLoading(false);
             fetchmess();
-            navigate("/HeartBot"); // Redirect to the main page
+            navigate("/MainPage"); // Redirect to the main page
           } catch (error) {
             console.error("Error during Google login:", error);
             setLoading(false);

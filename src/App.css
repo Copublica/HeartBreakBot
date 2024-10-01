@@ -25,6 +25,14 @@
   }
 }
 
+.newcardcss{
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  align-content: center;
+  height: 300px !important;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -780,7 +788,8 @@ z-index: -9;
 } 
 .line{
   border: 2px solid #8C8895;
-  width: 100%;
+  width: 80%;
+  margin: auto;
   margin-top: 30px;
   height: 0px !important;
   border-radius: 2px;
@@ -1089,3 +1098,17 @@ z-index: -9;
     margin-top: 50px;
   }
   
+.bot-image{
+  width: 150px;position: absolute;top: 33px;transform: translate(-48%, 0%);
+}
+.bot-text{
+  margin-top: 100px;
+  text-align: center;
+}
+.hearbot-btn{
+  margin-top: 20px;
+
+}
+.accordion1{
+  padding: 23px 10px;
+}
