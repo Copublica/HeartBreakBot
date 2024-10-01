@@ -909,7 +909,10 @@ const HeartBot3 = () => {
                 style={{ cursor: "pointer" }}
                 onClick={() => navigate("/Bug")}
               >
-
+                <div className="d-flex flex-column align-items-center">
+                  <i className="fa-solid fa-bug bug-icon"></i>
+                  <span className="bug-report-text">Report a bug</span>
+                </div>
               </div>
             </div>
           </div>
