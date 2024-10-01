@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import loadingSpiner from "./spinner.json";
 import Lottie from "lottie-react";
 import { Link, useNavigate } from "react-router-dom";
-import OtherComponent from './welcomeLogin';
+import OtherComponent from "./welcomeLogin";
 import Animation123 from "./greycolor.json";
 import Animation12 from "./BarAanimation.json";
 import readingAnimation from "./quizAnimation.json";
-
 
 import FeedbackButtons from "./FeedbackButtons";
 import { determineAttachmentStyle } from "./AttachmentStyleService";
@@ -139,7 +138,7 @@ const HeartBot3 = () => {
         setIsQuizVisible(true); // Show the quiz after Deepgram completes
       } else {
         await sendToDeepgram(
-         "I'm Mila, an AI agent built to offer emotional and mental health support to individuals coping with the difficulties of heartbreak. While I strive to assist you, I'm not perfect. If my responses seem off, don't hesitate to ask again"
+          "I'm Mila, an AI agent built to offer emotional and mental health support to individuals coping with the difficulties of heartbreak. While I strive to assist you, I'm not perfect. If my responses seem off, don't hesitate to ask again"
         );
         setIsQuizVisible(false); // Hide the quiz
       }
@@ -164,176 +163,180 @@ const HeartBot3 = () => {
 
   //-------------=============================---------------------------==================================================
 
-    // Function to check the correct audio MIME type supported by the browser
-    function getSupportedMimeType() {
-      const mimeTypes = [
-        'audio/webm;codecs=opus', 
-        'audio/ogg;codecs=opus', 
-        'audio/mp4',
-        'audio/x-matroska;codecs=opus'
-      ];
+  // Function to check the correct audio MIME type supported by the browser
+  function getSupportedMimeType() {
+    const mimeTypes = [
+      "audio/webm;codecs=opus",
+      "audio/ogg;codecs=opus",
+      "audio/mp4",
+      "audio/x-matroska;codecs=opus",
+    ];
 
-      for (const mimeType of mimeTypes) {
-        if (MediaRecorder.isTypeSupported(mimeType)) {
-          return mimeType;
-        }
+    for (const mimeType of mimeTypes) {
+      if (MediaRecorder.isTypeSupported(mimeType)) {
+        return mimeType;
       }
-      return null; // If no supported MIME type is found
     }
+    return null; // If no supported MIME type is found
+  }
 
-    // Initialize AudioContext for iOS to play audio without stopping the mic
-    function initializeAudioContext() {
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      return audioContext;
-    }
+  // Initialize AudioContext for iOS to play audio without stopping the mic
+  function initializeAudioContext() {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    return audioContext;
+  }
 
+  useEffect(() => {
+    let count = 4;
+    let timer;
 
+    // Timer to trigger handleSubmit when transcription is finished
+    const startTimer = () => {
+      clearInterval(timer);
+      count = 4;
+      timer = setInterval(() => {
+        count--;
+        console.log(count);
+        if (count === 0) {
+          clearInterval(timer);
+          console.log("Time's up!");
 
-    useEffect(() => {
-      let count = 4;
-      let timer;
-    
-      // Timer to trigger handleSubmit when transcription is finished
-      const startTimer = () => {
-        clearInterval(timer);
-        count = 4;
-        timer = setInterval(() => {
-          count--;
-          console.log(count);
-          if (count === 0) {
-            clearInterval(timer);
-            console.log("Time's up!");
-    
-            if (finalTranscript !== "") {
-              finalTranscript += "\n";
-              newWord = finalTranscript;
-    
-              // You can uncomment the following if/else if logic if needed
-              // if (countConversitions < 12) {
-              //     countConversitions++;
-              //     handleAnswer();
-              // } else if (countConversitions == 12) {
-              //     countConversitions++;
-              //     getAttachmentStyleMessage();
-              // } else {
-              handleSubmit();
-              // }
-    
-              setBtnText("Milla is thinking");
-              finalTranscript = "";
-            }
+          if (finalTranscript !== "") {
+            finalTranscript += "\n";
+            newWord = finalTranscript;
+
+            // You can uncomment the following if/else if logic if needed
+            // if (countConversitions < 12) {
+            //     countConversitions++;
+            //     handleAnswer();
+            // } else if (countConversitions == 12) {
+            //     countConversitions++;
+            //     getAttachmentStyleMessage();
+            // } else {
+            handleSubmit();
+            // }
+
+            setBtnText("Milla is thinking");
+            finalTranscript = "";
           }
-        }, 1000);
-      };
-    
-      const initialize = async () => {
-        try {
-          slowDownAndStopAnimation(animation12Ref);
-    
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          audioContext = initializeAudioContext(); // Initialize the audio context
-          micSource = audioContext.createMediaStreamSource(stream);
-          console.log("Microphone stream:", stream);
-    
-          // Get supported MIME type
-          const mimeType = getSupportedMimeType();
-          if (!mimeType) {
-            return alert("Your browser does not support any of the required audio formats for recording.");
-          }
-    
-          // Initialize MediaRecorder
-          const mediaRecorder = new MediaRecorder(stream, { mimeType });
-          console.log("Using MIME type:", mimeType);
-    
-          // Initialize WebSocket connection with Deepgram
-          const socket = new WebSocket('wss://api.deepgram.com/v1/listen', [
-            'token',
-            'e7247247734201d7b7eab7dca67f7db6e562e51e', // Replace with your Deepgram API key
-          ]);
-    
-          socket.onopen = () => {
-            console.log({ event: "onopen" });
-    
-            const spinner = document.querySelector(".spiner");
-      
-            spinner.style.display = "none";
-    
-            mediaRecorder.ondataavailable = async (event) => {
-              if (event.data.size > 0 && socket.readyState === 1) {
-                socket.send(event.data);
-              }
-            };
-    
-            try {
-              mediaRecorder.start(1000); // Capture audio data in 1-second intervals
-            } catch (error) {
-              ErrorLogger({
-                email: getCookie("email"),
-                errorName: "useEffect MediaRecorder in HeartBot",
-                errorMessage: error.message || "An error occurred in starting the MediaRecorder (useEffect)",
-              });
-              navigate("/ErrorPage");
-            }
-          };
-    
-          socket.onmessage = (message) => {
-            console.log(checkpause);
-            // Skip processing if transcription is paused
-            if (!checkpause) {
-              clearTimeout(timeoutHandle);
-              const received = JSON.parse(message.data);
-    
-              if (
-                received.channel &&
-                received.channel.alternatives &&
-                received.channel.alternatives.length > 0
-              ) {
-                const transcript = received.channel.alternatives[0].transcript;
-                if (transcript) {
-                  finalTranscript += transcript + " ";
-                  setTranscript(finalTranscript);
-                  startTimer();
-                  setIsQuizVisible(true);
-                  setIsMillaAnswering(false);
-                  setDisplayedText(finalTranscript);
-                  setIsTranscriptVisible(true);
-                  setBtnText("Please speak");
-                }
-              }
-            }
-          };
-    
-          socket.onerror = (error) => {
-            console.log({ event: "onerror", error });
-          };
-    
-          // Cleanup function to stop microphone and clear intervals
-          return () => {
-            stopMic();
-            clearInterval(timer);
-            mediaRecorder.stop();
-            socket.close();
-          };
-        } catch (error) {
-          console.error("Error during initialization:", error);
         }
-      };
-    
-      // Call the initialize function (async inside useEffect)
-      initialize();
-    
-      // Cleanup on component unmount
-      return () => {
-        clearInterval(timer);
-        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      }, 1000);
+    };
+
+    const initialize = async () => {
+      try {
+        slowDownAndStopAnimation(animation12Ref);
+
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        audioContext = initializeAudioContext(); // Initialize the audio context
+        micSource = audioContext.createMediaStreamSource(stream);
+        console.log("Microphone stream:", stream);
+
+        // Get supported MIME type
+        const mimeType = getSupportedMimeType();
+        if (!mimeType) {
+          return alert(
+            "Your browser does not support any of the required audio formats for recording."
+          );
+        }
+
+        // Initialize MediaRecorder
+        const mediaRecorder = new MediaRecorder(stream, { mimeType });
+        console.log("Using MIME type:", mimeType);
+
+        // Initialize WebSocket connection with Deepgram
+        const socket = new WebSocket("wss://api.deepgram.com/v1/listen", [
+          "token",
+          "e7247247734201d7b7eab7dca67f7db6e562e51e", // Replace with your Deepgram API key
+        ]);
+
+        socket.onopen = () => {
+          console.log({ event: "onopen" });
+
+          const spinner = document.querySelector(".spiner");
+
+          spinner.style.display = "none";
+
+          mediaRecorder.ondataavailable = async (event) => {
+            if (event.data.size > 0 && socket.readyState === 1) {
+              socket.send(event.data);
+            }
+          };
+
+          try {
+            mediaRecorder.start(1000); // Capture audio data in 1-second intervals
+          } catch (error) {
+            ErrorLogger({
+              email: getCookie("email"),
+              errorName: "useEffect MediaRecorder in HeartBot",
+              errorMessage:
+                error.message ||
+                "An error occurred in starting the MediaRecorder (useEffect)",
+            });
+            navigate("/ErrorPage");
+          }
+        };
+
+        socket.onmessage = (message) => {
+          console.log(checkpause);
+          // Skip processing if transcription is paused
+          if (!checkpause) {
+            clearTimeout(timeoutHandle);
+            const received = JSON.parse(message.data);
+
+            if (
+              received.channel &&
+              received.channel.alternatives &&
+              received.channel.alternatives.length > 0
+            ) {
+              const transcript = received.channel.alternatives[0].transcript;
+              if (transcript) {
+                finalTranscript += transcript + " ";
+                setTranscript(finalTranscript);
+                startTimer();
+                setIsQuizVisible(true);
+                setIsMillaAnswering(false);
+                setDisplayedText(finalTranscript);
+                setIsTranscriptVisible(true);
+                setBtnText("Please speak");
+              }
+            }
+          }
+        };
+
+        socket.onerror = (error) => {
+          console.log({ event: "onerror", error });
+        };
+
+        // Cleanup function to stop microphone and clear intervals
+        return () => {
+          stopMic();
+          clearInterval(timer);
           mediaRecorder.stop();
-        }
-        if (socket && socket.readyState === 1) {
           socket.close();
-        }
-      };
-    }, []);
-    
+        };
+      } catch (error) {
+        console.error("Error during initialization:", error);
+      }
+    };
+
+    // Call the initialize function (async inside useEffect)
+    initialize();
+
+    // Cleanup on component unmount
+    return () => {
+      clearInterval(timer);
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+      }
+      if (socket && socket.readyState === 1) {
+        socket.close();
+      }
+    };
+  }, []);
+
   var nextQuestionIndex = -1;
   var responseCounts = {};
 
@@ -443,10 +446,8 @@ const HeartBot3 = () => {
       setAttachmentStyle(message);
 
       const spinner = document.querySelector(".spiner");
-      
-        spinner.style.display = "none";
-     
-    
+
+      spinner.style.display = "none";
 
       // Retrieve username from cookie
       const username = getCookie("name") || "there";
@@ -877,18 +878,16 @@ const HeartBot3 = () => {
     }
   }, [btnText]);
 
-
-
-  //logout 
+  //logout
   const handleLogout = () => {
-    stopMic(); 
-    navigate("/loginPage"); 
+    stopMic();
+    navigate("/loginPage");
   };
 
   return (
     <div className="display">
       <div
-        className="container voice-ui"
+        className="container voice-ui px-4"
         style={{
           backgroundSize: "cover",
           height: "100dvh",
@@ -897,12 +896,21 @@ const HeartBot3 = () => {
         <div className="d-flex">
           <div className="milaNav" style={{ zIndex: "99" }}>
             <div className="navbar-4">
-              <button
-                className="logout-button btn btn-dark ms-auto"
-                onClick={handleLogout}
+              {/* Logout Button */}
+              <Link to="/WelcomeLogin">
+                <button className="back-button" type="button">
+                  <i className="fas fa-angle-left"></i>{" "}
+                </button>
+              </Link>
+
+              {/* Bug Report Icon - placed below the logout button */}
+              <div
+                className="bug-report-container text-center"
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/Bug")}
               >
-                Logout
-              </button>
+
+              </div>
             </div>
           </div>
         </div>
@@ -949,9 +957,8 @@ const HeartBot3 = () => {
               </div>
 
               {/* Audio Player */}
-             
-             <audio id="audioPlayer" controls ref={audioPlayerRef}></audio>
-             
+
+              <audio id="audioPlayer" controls ref={audioPlayerRef}></audio>
             </div>
           </div>
         )}
