@@ -913,8 +913,8 @@ const HeartBot3 = () => {
                   >
                     <div className="d-flex flex-column align-items-center">
                       <i className="fa-solid fa-bug bug-icon"></i>
-                      <span className="bug-report-text">Report</span>
-                      <span className="bug-report-text">a bug</span>
+                      {/* <span className="bug-report-text">Report</span>
+                      <span className="bug-report-text">a bug</span> */}
                     </div>
                   </div>
                 </div>
@@ -990,3 +990,12 @@ const HeartBot3 = () => {
 };
 
 export default HeartBot3;
+
+
+
+
+
+
+
+
+
