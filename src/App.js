@@ -42,6 +42,7 @@ function App() {
 
       {/* <Route path='/MainPage' element={<MainPage/>}></Route> */}
       <Route path='/MainPage' element={ <PrivateRoute><MainPage/></PrivateRoute>}></Route>
+      {/* <Route path='/MainPage' element={ <MainPage/>}></Route> */}
      
      
       

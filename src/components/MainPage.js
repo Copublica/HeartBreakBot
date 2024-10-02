@@ -182,8 +182,8 @@ function MainPage() {
                 className=" mt-2 myCard newcardcss" 
                >
                 <div>
-                
-                <img src="./assets/images/Heartbot.png" className="bot-image" style={{ width: '150px' }} alt="HeartBot" />
+                 
+                <img src="./assets/images/Heartbot.png" className="bot-image" style={{ width: '150px'}} alt="HeartBot" />
 
               </div>
                 <p className="bot-text">Looks like you beat the crowd! <br></br> Being an early bird you can now enjoy our AI heartbot for free.</p>
