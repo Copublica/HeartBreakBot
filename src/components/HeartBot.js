@@ -884,6 +884,8 @@ const HeartBot3 = () => {
     navigate("/loginPage");
   };
 
+  
+
   return (
     <div className="display">
       <div
@@ -893,30 +895,31 @@ const HeartBot3 = () => {
           height: "100dvh",
         }}
       >
-        <div className="d-flex">
-          <div className="milaNav" style={{ zIndex: "99" }}>
-            <div className="navbar-4">
-              {/* Logout Button */}
-              <Link to="/WelcomeLogin">
-                <button className="back-button" type="button">
-                  <i className="fas fa-angle-left"></i>{" "}
-                </button>
-              </Link>
+            <div className="d-flex">
+              <div className="milaNav" style={{ zIndex: "99" }}>
+                <div className="navbar-4">
+                  {/* Logout Button */}
+                  <Link to="/WelcomeLogin">
+                    <button className="back-button" type="button">
+                      <i className="fas fa-angle-left"></i>{" "}
+                    </button>
+                  </Link>
 
-              {/* Bug Report Icon - placed below the logout button */}
-              <div
-                className="bug-report-container text-center"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigate("/Bug")}
-              >
-                <div className="d-flex flex-column align-items-center">
-                  <i className="fa-solid fa-bug bug-icon"></i>
-                  <span className="bug-report-text">Report a bug</span>
+                  {/* Bug Report Icon - placed below the logout button */}
+                  <div
+                    className="bug-report-container text-center"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate("/Bug")}
+                  >
+                    <div className="d-flex flex-column align-items-center">
+                      <i className="fa-solid fa-bug bug-icon"></i>
+                      <span className="bug-report-text">Report</span>
+                      <span className="bug-report-text">a bug</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
         {!showVoiceAbbotMilla && (
           <div className="d-flex flex-column align-items-center voice-animation">
             {/* Spinner */}
@@ -944,6 +947,7 @@ const HeartBot3 = () => {
                   speed={btnText === "Milla is answering" ? 1 : 2}
                 />
               </div>
+
               <button className="msg-btn" id="msgbtn">
                 {btnText}
               </button>
