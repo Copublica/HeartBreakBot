@@ -188,7 +188,7 @@ function MainPage() {
               </div>
                 <p className="bot-text">Looks like you beat the crowd! <br></br> Being an early bird you can now enjoy our AI heartbot for free.</p>
 
-                <button className="btn btn-light hearbot-btn"  onClick={() => recordVoiceBotUsage("Menopause & Midlife Crisis", "/HeartBot")}>Try for free</button>
+                <button className="btn btn-light hearbot-btn"  onClick={() => recordVoiceBotUsage("HeartBot", "/HeartBot")}>Try for free</button>
 
               </div>
             </div>
