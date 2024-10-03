@@ -99,7 +99,7 @@ function LoginPage() {
     setLoading(true)
 
     try {
-      const response = await axios.post("https://backend.supermilla.com/login", formData);
+      const response = await axios.post("https://backend.supermilla.com/hblogin", formData);
 
       console.log(response.data);
       if (response.data.message === 'Login successful') {
@@ -128,7 +128,7 @@ function LoginPage() {
     };
 
     try {
-      const response = await axios.post('https://backend.supermilla.com/auth/google-login', user);
+      const response = await axios.post('https://backend.supermilla.com/hbauth/google-login', user);
       console.log('Google login response:', response.data);
       setCookie('name', user.username, 7); 
       setCookie('email', user.email, 7);
@@ -259,7 +259,7 @@ export const CustomButton = () => {
 
           // Send data to your backend to store in MongoDB
           try {
-            const response = await axios.post('https://backend.supermilla.com/auth/google-login', user);
+            const response = await axios.post('https://backend.supermilla.com/hbauth/google-login', user);
             console.log('Google login response:', response.data);
             setCookie('name', user.username, 7); // Expires in 7 days
             setCookie('email', user.email, 7);

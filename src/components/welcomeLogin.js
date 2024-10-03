@@ -81,7 +81,7 @@ const WelcomeLogin = () => {
 
     try {
       const response = await axios.post(
-        "https://backend.supermilla.com/auth/google-login",
+        "https://backend.supermilla.com/hbauth/google-login",
         user
       );
       console.log("Google login response:", response.data);
@@ -186,7 +186,7 @@ export const CustomButton = () => {
           // Send data to your backend to store in MongoDB
           try {
             const response = await axios.post(
-              "https://backend.supermilla.com/auth/google-login",
+              "https://backend.supermilla.com/hbauth/google-login",
               user
             );
             console.log("Google login response:", response.data);
