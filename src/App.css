@@ -1138,11 +1138,7 @@ a {
   right: 10px;
   border: none;
   border-radius: 50%;
-  background: radial-gradient(
-    77.11% 77.11% at 50% 22.89%,
-    rgba(255, 38, 0, 0.4) 0%,
-    rgba(255, 38, 0, 0.32) 100%
-  );
+  background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);
   color: #fff;
   width: 32px;
   height: 32px;
