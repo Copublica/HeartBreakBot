@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   WhatsappShareButton,
   FacebookShareButton,
@@ -9,38 +9,52 @@ import {
   FacebookIcon,
   TwitterIcon,
   LinkedinIcon,
-} from 'react-share';
+} from "react-share";
 import Popup from "reactjs-popup";
 
 const SharePopup = ({ isPopupOpen, setOpenPopup }) => {
+  
   const handleCopy = async () => {
     try {
-      navigator.clipboard.writeText('https://heartbot.live/');
+      // Send a POST request to generate the short URL
+      const response = await fetch("https://backend.supermilla.com/url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: "https://heartbot.live" }), // The original URL to shorten
+      });
+      const data = await response.json();
+
+      // Construct the short URL using the backend's base URL
+      const shortUrl = `https://backend.supermilla.com/${data.id}`;
+     
+      // Copy the short URL to clipboard
+      await navigator.clipboard.writeText(shortUrl);
+      // alert('Short URL copied to clipboard!');
       setOpenPopup(false);
     } catch (error) {
-      console.error('Error updating conversation count:', error);
+      console.error("Error generating short URL:", error);
     }
   };
 
   return (
     <Popup
-    open={isPopupOpen}
-    onClose={() => setOpenPopup(false)}
-    modal
-    closeOnDocumentClick={false} // Disable closing on outside click
-    overlayStyle={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
+      open={isPopupOpen}
+      onClose={() => setOpenPopup(false)}
+      modal
+      closeOnDocumentClick={false} // Disable closing on outside click
+      overlayStyle={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
       contentStyle={{
-        width: '80%',
-        maxWidth: '400px',
-        height: 'auto',
-        padding: '20px',
-        borderRadius: '10px',
-        textAlign: 'center',
-        position: 'relative',
+        width: "80%",
+        maxWidth: "400px",
+        height: "auto",
+        padding: "20px",
+        borderRadius: "10px",
+        textAlign: "center",
+        position: "relative",
       }}
     >
       <div className="popup-content-share">
@@ -54,16 +68,16 @@ const SharePopup = ({ isPopupOpen, setOpenPopup }) => {
           </button>
         </Link>
 
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: "20px" }}>
           <i
             className="fa-solid fa-envelope-open-text"
             style={{
-              width: '80%',
-              padding: '10px',
-              borderRadius: '5px',
-              textAlign: 'center',
-              fontSize: '40px',
-              color: '#15057B',
+              width: "80%",
+              padding: "10px",
+              borderRadius: "5px",
+              textAlign: "center",
+              fontSize: "40px",
+              color: "#15057B",
             }}
           ></i>
         </div>
@@ -72,14 +86,14 @@ const SharePopup = ({ isPopupOpen, setOpenPopup }) => {
 
         <div
           className="copy-link-section"
-          style={{ marginTop: '20px', marginBottom: '20px' }}
+          style={{ marginTop: "20px", marginBottom: "20px" }}
         >
           <p>Share the code below:</p>
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <input
@@ -87,23 +101,23 @@ const SharePopup = ({ isPopupOpen, setOpenPopup }) => {
               value="https://heartbot.live/"
               readOnly
               style={{
-                width: '60%',
-                padding: '10px',
-                borderRadius: '5px',
-                textAlign: 'center',
-                marginRight: '10px',
-                border: '1px solid #ccc',
+                width: "60%",
+                padding: "10px",
+                borderRadius: "5px",
+                textAlign: "center",
+                marginRight: "10px",
+                border: "1px solid #ccc",
               }}
             />
             <button
               onClick={handleCopy} // Call handleCopy on click
               style={{
-                padding: '10px',
-                borderRadius: '5px',
-                backgroundColor: '#15057B',
-                color: 'white',
-                border: 'none',
-                cursor: 'pointer',
+                padding: "10px",
+                borderRadius: "5px",
+                backgroundColor: "#15057B",
+                color: "white",
+                border: "none",
+                cursor: "pointer",
               }}
             >
               <i className="fas fa-link"></i>
@@ -113,34 +127,50 @@ const SharePopup = ({ isPopupOpen, setOpenPopup }) => {
 
         <div
           style={{
-            backgroundColor: '#f0f0f0',
-            padding: '20px',
-            borderRadius: '10px',
+            backgroundColor: "#f0f0f0",
+            padding: "20px",
+            borderRadius: "10px",
           }}
         >
-          <p>Share on Social Media:</p>
+          <p>Share on Social Media:</p>s
           <div
             className="share-buttons"
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              gap: '10px',
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "10px",
             }}
           >
-            <WhatsappShareButton url="https://heartbot.live/" title="Check this out!" className="share-button">
+            <WhatsappShareButton
+              url="https://heartbot.live/"
+              title="Check this out!"
+              className="share-button"
+            >
               <WhatsappIcon size={32} round />
             </WhatsappShareButton>
 
-            <FacebookShareButton url="https://heartbot.live/" quote="Check this out!" className="share-button">
+            <FacebookShareButton
+              url="https://heartbot.live/"
+              quote="Check this out!"
+              className="share-button"
+            >
               <FacebookIcon size={32} round />
             </FacebookShareButton>
 
-            <TwitterShareButton url="https://heartbot.live/" title="Check this out!" className="share-button">
+            <TwitterShareButton
+              url="https://heartbot.live/"
+              title="Check this out!"
+              className="share-button"
+            >
               <TwitterIcon size={32} round />
             </TwitterShareButton>
 
-            <LinkedinShareButton url="https://heartbot.live/" title="Check this out!" className="share-button">
+            <LinkedinShareButton
+              url="https://heartbot.live/"
+              title="Check this out!"
+              className="share-button"
+            >
               <LinkedinIcon size={32} round />
             </LinkedinShareButton>
           </div>
