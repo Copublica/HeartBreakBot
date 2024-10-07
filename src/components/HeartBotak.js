@@ -39,7 +39,7 @@ const HeartBot3 = () => {
   const audioPlayerRef = useRef();
   const mediaRecorderRef = useRef(null);
   const streamRef = useRef(null);
- 
+
   const [stream, setStream] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
   const [transcript, setTranscript] = useState("");
@@ -76,6 +76,7 @@ const HeartBot3 = () => {
   let CountQuestion = "";
   let mediaRecorder, socket, audioContext, micSource;
   let convadd = 0;
+  
 
   useEffect(() => {
     if (isPaused) {
@@ -206,31 +207,12 @@ const HeartBot3 = () => {
           if (finalTranscript !== "") {
             finalTranscript += "\n";
             newWord = finalTranscript;
-
-
-            convadd++;
-            setConvCount(convadd);
-            console.log("edd",convadd);
-
             
-            if (convadd === 4 || convadd === 6) {
-              setIsPopupOpen(true); 
-            } else {
-              setIsPopupOpen(false); 
-            }
             
+            countConversitions++; //Todo Share
+            setConvCount(countConversitions); //Todo Share
 
-
-            // You can uncomment the following if/else if logic if needed
-            // if (countConversitions < 12) {
-            //     countConversitions++;
-            //     handleAnswer();
-            // } else if (countConversitions == 12) {
-            //     countConversitions++;
-            //     getAttachmentStyleMessage();
-            // } else {
             handleSubmit();
-            // }
 
             setBtnText("Milla is thinking");
             finalTranscript = "";
@@ -740,13 +722,6 @@ const HeartBot3 = () => {
     }
   };
 
-
-
-
-
-
-
-
   //---------------------------------------------------------COUNTER----------------------------------------------------
   const [convCount, setConvCount] = useState(0);
   const location = useLocation();
@@ -758,28 +733,28 @@ const HeartBot3 = () => {
   }, [convCount]);
 
   useEffect(() => {
-    const fetchConvCount = async () => {
-      try {
-        const response = await fetch(
-          `https://backend.supermilla.com/convcount/get-count/${userEmail}`
-        );
-        const data = await response.json();
-        if (data.success) {
-          convadd = data.convCounts;
-        } else {
-          convadd =0;
-        }
-      } catch (error) {
-        console.error("Error fetching conv count", error);
-        convadd =0;
+  const fetchConvCount = async () => {
+    try {
+      const response = await fetch(
+        `https://backend.supermilla.com/convcount/get-count/${userEmail}`
+      );
+      const data = await response.json();
+      if (data.success) {
+        convadd = data.convCounts;
+      } else {
+        convadd = 0;
       }
-    };
-    fetchConvCount();
-  }, []);
+    } catch (error) {
+      console.error("Error fetching conv count", error);
+      convadd = 0;
+    }
+  };
+  fetchConvCount();
+}, []);
 
-    
 
   const saveConv = async (conv) => {
+    conv = convadd + conv;
     console.log("New Addition", conv);
     try {
       const response = await fetch(
@@ -819,29 +794,24 @@ const HeartBot3 = () => {
     };
   }, []);
 
-
   useEffect(() => {
     return () => {
       saveConv(latestConv.current);
     };
   }, [location]);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  
 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  useEffect(() => {
+    if (countConversitions === 4 || countConversitions === 6) {
+      saveConv(latestConv.current);
+      setIsPopupOpen(true); // Show popup if no conversations
+    } else {
+      setIsPopupOpen(false); // Hide popup if conversations are present
+    }
+  }, [countConversitions]);
 
   //--------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
 
   function getCookie(name) {
     const nameEQ = name + "=";
@@ -985,6 +955,8 @@ const HeartBot3 = () => {
     navigate("/loginPage");
   };
 
+
+
   return (
     <div className="display">
       <div
@@ -994,7 +966,7 @@ const HeartBot3 = () => {
           height: "100dvh",
         }}
       >
-       <SharePopup
+        <SharePopup
           isPopupOpen={isPopupOpen}
           setOpenPopup={setIsPopupOpen}
          
@@ -1002,7 +974,6 @@ const HeartBot3 = () => {
         <div className="d-flex">
           <div className="milaNav" style={{ zIndex: "99" }}>
             <div className="navbar-4">
-         
               {/* Use the new component */}
               {/* Logout Button */}
               <Link to="/MainPage">
@@ -1018,7 +989,6 @@ const HeartBot3 = () => {
               >
                 <div className="d-flex flex-column align-items-center">
                   <i className="fa-solid fa-bug bug-icon"></i>
-
                 </div>
               </div>
             </div>
