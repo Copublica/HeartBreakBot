@@ -58,6 +58,24 @@ function MainPage() {
     fetchmess();
 }, []);
 
+useEffect(() => {
+  const generateUniqueKey = async () => {
+    const email = getCookie("email");
+    if (email) {
+      try {
+        const response = await axios.post('https://backend.supermilla.com/generate/key', { email });
+        console.log("Unique key generated:", response.data.uniqueKey);
+        // Optionally store the unique key in cookies or local storage
+      } catch (error) {
+        console.error("Error generating unique key:", error);
+      }
+    }
+  };
+
+  generateUniqueKey();
+}, []);
+
+
   const userName = getCookie('name');
   const email = getCookie('email');
   const carouselRef = useRef(null);
@@ -140,42 +158,6 @@ function MainPage() {
 
         <div className="container">
           <div className="row">
-            {/* <div className="col-6 col-left">
-              <div
-                className="card card-left d-flex mt-2 myCard"
-                onClick={() => recordVoiceBotUsage("Social Emotional Learning", "/HeartBot")}
-              >
-                Social emotional learning
-              </div>
-              <div
-                className="card card-right mt-2 myCard"
-                onClick={() => recordVoiceBotUsage("AIDS Awareness", "/HeartBot")}
-              >
-                AIDS awareness
-              </div>
-            </div> */}
-            {/* <div className="col-6 col-right">
-              <div
-                className="card card-right mt-2 myCard"
-                onClick={() => recordVoiceBotUsage("Mental Health", "/HeartBot")}
-              >
-                Mental health
-              </div>
-              <div
-                className="card card-left d-flex mt-2 myCard"
-                onClick={() => recordVoiceBotUsage("Learn about voicebots", "/HeartBot")}
-              >
-                Learn about voicebots
-              </div>
-            </div> */}
-            {/* <div className="col-12">
-              <div
-                className="card card-right mt-2 myCard"
-                onClick={() => recordVoiceBotUsage("Menopause & Midlife Crisis", "/Mmc")}
-              >
-                Menopause & midlife crisis
-              </div>
-            </div> */}
             <div className="col-12">
            
               <div
