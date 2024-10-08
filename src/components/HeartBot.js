@@ -267,7 +267,7 @@ const HeartBot3 = () => {
           "wss://api.deepgram.com/v1/listen?model=nova-2",
           [
             "token",
-            "5c9fd4448cc1afdd9312f85b2491b7e1d2d6be0d", // Replace with your Deepgram API key
+            `${process.env.REACT_APP_DEEPGRAM_API_KEY}`, // Replace with your Deepgram API key
           ]
         );
 
