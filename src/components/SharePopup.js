@@ -12,7 +12,7 @@ import {
 } from "react-share";
 import Popup from "reactjs-popup";
 
-const SharePopup = ({ isPopupOpen, setOpenPopup }) => {
+  const SharePopup = ({ isPopupOpen, setOpenPopup, handleMic }) => {
   const [uniqueLink, setUniqueLink] = useState("");
   const [hasShared, setHasShared] = useState(false);
   const [showThanks, setShowThanks] = useState(false);
@@ -76,6 +76,9 @@ const SharePopup = ({ isPopupOpen, setOpenPopup }) => {
     setHasShared(false);
     setShowThanks(false);
     setIsWaiting(false);
+    handleMic(false);
+
+
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
