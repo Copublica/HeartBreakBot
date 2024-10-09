@@ -33,7 +33,7 @@ const options = ["Yes", "No", "Not Sure", "It Depends"];
 
 let countConversitions = 0;
 
-const HeartBot3 = () => {
+const Testing = () => {
   const animation12Ref = useRef();
   const audioPlayerRef = useRef();
   const mediaRecorderRef = useRef(null);
@@ -62,6 +62,7 @@ const HeartBot3 = () => {
   const [showVoiceAbbotMilla, setshowVoiceAbbotMilla] = useState(false);
   const [isFormCompleted, setIsFormCompleted] = useState(true);
   const [UserAttachmentStyleDb, setUserAttachmentStyleDb] = useState(null);
+  const checkpause = useRef(false);
   const navigate = useNavigate();
   const messagesRef = useRef([]);
   let newWord = "";
@@ -71,21 +72,12 @@ const HeartBot3 = () => {
   let timeoutHandle = null;
   let isPlaying = false;
   let counttranscript = 3000;
-  let checkpause = false;
+
   let CountQuestion = "";
   let mediaRecorder, socket, audioContext, micSource;
   let convadd = 0;
 
-  useEffect(() => {
-    if (isPaused) {
-      console.log("Stop transcription.");
-      checkpause = false;
-    } else {
-      console.log("Resuming transcription.");
-      checkpause = true;
-    }
-  }, [isPaused]);
-
+  
   const stopAnimation = (ref) => {
     ref.current.stop();
   };
@@ -205,8 +197,9 @@ const HeartBot3 = () => {
           if (finalTranscript !== "") {
             finalTranscript += "\n";
             newWord = finalTranscript;
-
-
+            checkpause.current = true;
+          
+            console.log("final finalTranscript mic",checkpause);
             // convadd++;
             // setConvCount(convadd);
             // console.log("edd",convadd);
@@ -298,9 +291,10 @@ const HeartBot3 = () => {
         };
 
         socket.onmessage = (message) => {
-          console.log(checkpause);
+          
+          console.log("on msg ",checkpause);
           // Skip processing if transcription is paused
-          if (!checkpause) {
+          if (!checkpause.current) {
             clearTimeout(timeoutHandle);
             const received = JSON.parse(message.data);
 
@@ -493,7 +487,7 @@ const HeartBot3 = () => {
   };
 
   async function sendToDeepgram(text) {
-    checkpause = true;
+    checkpause.current = true;
     try {
       const response = await fetch(
         "https://api.deepgram.com/v1/speak?model=aura-luna-en",
@@ -553,7 +547,7 @@ const HeartBot3 = () => {
 
   async function handleSubmit(initialMessage = "") {
     try {
-      setIsPaused(true); // Pause transcription
+// Pause transcription
 
       if (newWord || initialMessage) {
         const userMessage = {
@@ -651,6 +645,7 @@ const HeartBot3 = () => {
   }
 
   function playNextAudio() {
+   
     try {
       if (isPlaying || audioQueue.length === 0) {
         return;
@@ -677,8 +672,9 @@ const HeartBot3 = () => {
       setZoom(true);
       audioPlayer.onended = () => {
         isPlaying = false;
-        setIsPaused(false); // Resume transcription after audio ends
-        checkpause = false;
+      // Resume transcription after audio ends
+    
+      checkpause.current = false;
         setTranscript();
         console.log("new deepgram count", checkpause);
         const UserAttechementstyleCokkie = getCookie("UserAttechementstyle");
@@ -688,17 +684,21 @@ const HeartBot3 = () => {
             setIsFormCompleted(false);
             setshowVoiceAbbotMilla(true);
             setDisplayedText(" ");
-            setIsPaused(true);
+            
             console.log("new deepgram count inner", CountDeepgram);
           }
         }
         convadd++;
         setConvCount(convadd);
         console.log("edd", convadd);
-        if (convadd === 2 || convadd === 4) {
+        if (convadd === 6 || convadd === 8 || convadd === 10) {
+        
           setIsPopupOpen(true);
+          checkpause.current = true;
+          console.log("share handle", checkpause);
         }
         else {
+         
             setIsPopupOpen(false); 
           }
         setBtnText("Speak now");
@@ -992,6 +992,10 @@ const HeartBot3 = () => {
     navigate("/loginPage");
   };
 
+  const handlemic=()=>{
+    checkpause.current = false;
+    console.log("handle mic on ",checkpause);
+  }
   return (
     <div className="display">
       <div
@@ -1004,6 +1008,7 @@ const HeartBot3 = () => {
        <SharePopup
           isPopupOpen={isPopupOpen}
           setOpenPopup={setIsPopupOpen}
+          handleMic={handlemic}
          
         />
         <div className="d-flex">
@@ -1100,4 +1105,4 @@ const HeartBot3 = () => {
   );
 };
 
-export default HeartBot3;
+export default Testing;

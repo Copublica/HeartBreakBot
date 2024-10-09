@@ -105,10 +105,11 @@ useEffect(() => {
   }
 
   const handleLogout = () => {
-    deleteAllCookies();
+    setCookie("name", "", -1); 
+    setCookie("email", "", -1); 
     navigate('/LoginPage');
   };
-
+  
   const recordVoiceBotUsage = async (voiceBotName, path) => {
     try {
       await axios.post("https://backend.supermilla.com/log-voicebot", {
