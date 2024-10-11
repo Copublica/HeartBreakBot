@@ -12,6 +12,7 @@ import { determineAttachmentStyle } from "./AttachmentStyleService";
 import QuizForm from "./QuizForm";
 import ErrorLogger from "./ErrorLogger";
 import SharePopup from "./SharePopup";
+import LoginGuestPopup from "./LoginGuestPopup";
 
 
 const Enrollquestions = [
@@ -62,6 +63,8 @@ const Testing = () => {
   const [showVoiceAbbotMilla, setshowVoiceAbbotMilla] = useState(false);
   const [isFormCompleted, setIsFormCompleted] = useState(true);
   const [UserAttachmentStyleDb, setUserAttachmentStyleDb] = useState(null);
+  const [isLoginGuestPopupOpen,setIsLoginGuestPopupOpen] = useState(false);
+
   const checkpause = useRef(false);
   const navigate = useNavigate();
   const messagesRef = useRef([]);
@@ -259,7 +262,7 @@ const Testing = () => {
           "wss://api.deepgram.com/v1/listen?model=nova-2",
           [
             "token",
-            `${process.env.REACT_APP_DEEPGRAM_API_KEY}`, // Replace with your Deepgram API key
+           `${process.env.REACT_APP_DEEPGRAM_API_KEY}`, // Replace with your Deepgram API key
           ]
         );
 
@@ -692,19 +695,26 @@ const Testing = () => {
         setConvCount(convadd);
         console.log("edd", convadd);
         if (convadd === 6 || convadd === 8 || convadd === 10) {
-        
           setIsPopupOpen(true);
           checkpause.current = true;
           console.log("share handle", checkpause);
         }
         else {
-         
             setIsPopupOpen(false); 
           }
         setBtnText("Speak now");
         playNextAudio();
         setZoom(false);
         slowDownAndStopAnimation(animation12Ref);
+
+        const guestCheck = getCookie("guestCheck");
+        if(guestCheck && convadd===2){
+          setIsLoginGuestPopupOpen(true);
+          checkpause.current = true;
+        }else {
+          setIsLoginGuestPopupOpen(false);
+        }
+
       };
     } catch (error) {
       ErrorLogger({
@@ -1005,11 +1015,15 @@ const Testing = () => {
           height: "100dvh",
         }}
       >
-       <SharePopup
+        <SharePopup
           isPopupOpen={isPopupOpen}
           setOpenPopup={setIsPopupOpen}
           handleMic={handlemic}
-         
+        />
+        <LoginGuestPopup
+          isPopupOpen={isLoginGuestPopupOpen}
+          setOpenPopup={setIsLoginGuestPopupOpen}
+          handleMic={handlemic}
         />
         <div className="d-flex">
           <div className="milaNav" style={{ zIndex: "99" }}>

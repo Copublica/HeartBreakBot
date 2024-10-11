@@ -85,7 +85,7 @@ const sendMessage = async (message, titlename) => {
   };
 
   try {
-    const response = await fetch("http://localhost:5000/message", {
+    const response = await fetch("https://backend.supermilla.com/message", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
