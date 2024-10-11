@@ -107,6 +107,7 @@ useEffect(() => {
   const handleLogout = () => {
     setCookie("name", "", -1); 
     setCookie("email", "", -1); 
+    setCookie("guestCheck","",-1);
     navigate('/LoginPage');
   };
   
