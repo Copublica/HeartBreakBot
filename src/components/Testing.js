@@ -497,7 +497,7 @@ const Testing = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Token ${process.env.REACT_APP_OPENAI_API_KEY}`,
+            Authorization: `Token ${process.env.REACT_APP_DEEPGRAM_API_KEY}`,
             "Content-Type": "application/json",
             accept: "text/plain",
           },
