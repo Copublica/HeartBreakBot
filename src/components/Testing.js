@@ -262,7 +262,7 @@ const Testing = () => {
           "wss://api.deepgram.com/v1/listen?model=nova-2",
           [
             "token",
-           `${process.env.REACT_APP_DEEPGRAM_API_KEY}`, // Replace with your Deepgram API key
+            `${process.env.REACT_APP_DEEPGRAM_API_KEY}`, // Replace with your Deepgram API key
           ]
         );
 
@@ -497,7 +497,7 @@ const Testing = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Token ${process.env.REACT_APP_DEEPGRAM_API_KEY}`,
+            Authorization: `Token ${process.env.REACT_APP_OPENAI_API_KEY}`,
             "Content-Type": "application/json",
             accept: "text/plain",
           },
@@ -694,7 +694,7 @@ const Testing = () => {
         convadd++;
         setConvCount(convadd);
         console.log("edd", convadd);
-        if (convadd === 6 || convadd === 8 || convadd === 10) {
+        if (convadd === 4 || convadd === 8 || convadd === 10) {
           setIsPopupOpen(true);
           checkpause.current = true;
           console.log("share handle", checkpause);

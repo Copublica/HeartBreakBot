@@ -158,6 +158,11 @@ const WelcomeLogin = () => {
             {/* <p className='w-p-text'>Hello! Ready to begin?</p> */}
           </div>
         </div>
+        <div className="guest-login">
+          <button className="guest welcome-button" onClick={handleGuestLogin}>
+          Try as a guest
+          </button>
+        </div>
         <div className="button-section">
           <div>
             <Link to="/SignUp">
@@ -174,8 +179,8 @@ const WelcomeLogin = () => {
         <div className="google-login">
           <div className="line"></div>
 
-          <GoogleOAuthProvider clientId="338976857027-gq4dq4k9rp20cdukhinchc6nec48gt4m.apps.googleusercontent.com">
-            <GoogleLogin
+          <GoogleOAuthProvider clientId="338976857027-ttmrm7i13t68kf22c3n36q0k03quql4i.apps.googleusercontent.com">
+                <GoogleLogin
               onSuccess={handleGoogleLoginSuccess}
               onError={() => {
                 console.log("Login Failed");
@@ -192,11 +197,7 @@ const WelcomeLogin = () => {
             <p>Token expires at: {new Date(user.exp * 1000).toLocaleString()}</p>
           </div>
         )} */}
-        <div className="guest-login">
-          <button className="guest welcome-button" onClick={handleGuestLogin}>
-            Login as Guest
-          </button>
-        </div>
+        
       </div>
     </div>
   );

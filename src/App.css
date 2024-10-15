@@ -1138,12 +1138,16 @@ a {
   right: 10px;
   border: none;
   border-radius: 50%;
-  background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3B20E1 -14%, #15057B 24%, #090232 63%, #000000 100%);
+  background: radial-gradient(
+    77.11% 77.11% at 50% 22.89%,
+    rgba(255, 38, 0, 0.4) 0%,
+    rgba(255, 38, 0, 0.32) 100%
+  );
   color: #fff;
   width: 32px;
   height: 32px;
   font-size: 22px;
-  box-shadow: 0 0 10px rgba(59, 32, 225, 39%);
+  box-shadow: 0 0 10px rgba(195, 38, 93, 0.6);
 }
 
 /*Error Page*/
@@ -1186,4 +1190,36 @@ a {
   border-radius: 50%;
   display: inline-block;
   text-align: center;
+}
+
+
+.btn-login-popup{
+  
+  width: 180px;
+  height: 40px;
+  border: none;
+  position: relative;
+  border-radius: 2px;
+  background: linear-gradient(136deg, rgba(59, 32, 225, 39%) 1%, #3b20e1 -14%, #15057b 24%, #090232 63%, #000000 100%);
+  color: #fff;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.or-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.or-line {
+  flex: 1;
+  height: 1px;
+  background-color: #ddd;
+  margin: 0 10px;
+}
+
+.or-text {
+  font-weight: bold;
+  color: #555;
 }
